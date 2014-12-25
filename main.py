@@ -10,27 +10,34 @@ def main():
     #The wrong answers get appended here for later review and score calculation
     right_answers=[]
     #Similar to above for the purpose of review and calculation
-    total_score=(len(right_answers)/num_questions)*100
-    #Calculation is the length of right answers (since it is a list and not an int) divided by num_questions * 100 for the percentage
 
     missed_questions = False
     scored_points = False
     #Nothing has started yet, so the default for these will be 'False'
 
-    num_questions=int(raw_input("Choose a number of questions to display between 1 and 85. To exit, press 0. \n"))
-    #User inputs how many questions will be asked
+    def exit_program():
+        print "Goodbye!"
+        sys.exit()
+        #Exits program
+
+    try:
+        num_questions=int(raw_input("Choose a number of questions to display between 1 and 100. To exit, press 0. \n"))
+        if num_questions == 0:
+            exit_program()
+    except ValueError:
+        print "Please enter a valid number."
+        num_questions=int(raw_input("Choose a number of questions to display between 1 and 100. To exit, press 0. \n"))
     
     count = 0
     #Default number of questions at 0 to start from the beginning
 
     for key in (quizdict):
     #Iterates over keys in the dictionary
-        while num_questions > count:
+        while num_questions > count:  
             if num_questions > 0 and num_questions <= 85:
                 current_question=random.choice(list(quizdict.keys()))
                 print ">" + current_question 
                 #The current question will be a random key from the quizdict dictionary as long as the number inputted by the user is between 0 and 85
-                
                 correct_answer=quizdict.get(current_question)
                 #Gets right answer from dictionary
                 answer=raw_input("Type your answer: \n" )
@@ -44,7 +51,6 @@ def main():
                     scored_points = True
                     #Updates scored_points to reflect the new answer
 
-
                 else:
                         print ("Wrong. \n")
                         print "\t The answer is",correct_answer+".\n"
@@ -53,34 +59,37 @@ def main():
                         missed_questions = True
                         #Updates missed_questions to reflect the new answer
 
+                del quizdict[current_question]
+                #Deletes the question so that it does not repeat itself
 
                 print "Your score is",str(len(right_answers))+".\n"
                 #Converts the length of the right_answers list(number of right answers) to string to display the new score
                 count = count + 1
                 #Increments the count to the next question until the maximum amount that the user specified is reached
-
                                 
-            elif num_questions == 0:
-                sys.exit()
-                #Exits program
 
             else:
-                print num_questions
+                num_questions=int(raw_input("Choose a number of questions to display between 1 and 100. To exit, press 0. \n"))
+
                 #Prompts user for number of questions again.
 
             
-        print "\t You scored",len(right_answers),"right out of",num_questions,"questions. Your grade is", "{0:.0f}%.".format(float(total_score))
-        #Tells user their amount right out of all questions; formats the grade as a percentage.
+        def quiz_result():
+            total_score= (len(right_answers)/float(num_questions))*100
+            #Calculation is the length of right answers (since it is a list and not an int) divided by num_questions * 100 for the percentage
+            #In Python 2.X, it appears a divided number has to be converted to float to not truncate and appear as "0"
             
-        if total_score >=60:
-            print "\t You passed this test. \n"
-            #Condition for passing is equal to or greater than 60
-            if total_score == 100:
-                print "\t You aced it! Congratulations. \n"
-                #This code only runs if the score is 100 exactly
-        else:
-            print "\t You failed this test.\n"
+            print "\tYou scored",len(right_answers),"right out of",num_questions,"questions. Your grade is", "{0:.0f}%.".format(float(total_score))
 
+            if total_score >=60:
+                print "\tYou passed this test. \n"
+                if total_score == 100:
+                    print "\tYou aced it! Congratulations. \n"
+            else:
+                print "\tYou failed this test.\n"
+                
+        if num_questions >= 1:
+            quiz_result()
 
         def restart():
             if num_questions >= 1:
@@ -101,6 +110,8 @@ def main():
                 for wrong in wrong_answers:
                     print (wrong)+"\n"
                     #This shows all wrong answers in the list wrong_answers
+                restart()
+                #Gives option to restart after showing all wrong answers.
             else:
                     restart()
         else:
