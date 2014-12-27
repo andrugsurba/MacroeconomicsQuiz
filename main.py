@@ -30,14 +30,19 @@ def main():
     
     count = 0
     #Default number of questions at 0 to start from the beginning
+    
+    i=1
+    #Number to be incremented displaying question number
 
     for key in (quizdict):
     #Iterates over keys in the dictionary
         while num_questions > count:  
             if num_questions > 0 and num_questions <= 85:
                 current_question=random.choice(list(quizdict.keys()))
-                print ">" + current_question 
+                print "%d )" %i, current_question
                 #The current question will be a random key from the quizdict dictionary as long as the number inputted by the user is between 0 and 85
+                i+=1
+                #Question number is incremented
                 correct_answer=quizdict.get(current_question)
                 #Gets right answer from dictionary
                 answer=raw_input("Type your answer: \n" )
