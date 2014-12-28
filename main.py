@@ -14,6 +14,7 @@ def main():
     missed_questions = False
     scored_points = False
     #Nothing has started yet, so the default for these will be 'False'
+    prompt="Choose a number of questions to display between 1 and 100. To exit, press 0. \n"
 
     def exit_program():
         print "Goodbye!"
@@ -21,12 +22,12 @@ def main():
         #Exits program
 
     try:
-        num_questions=int(raw_input("Choose a number of questions to display between 1 and 100. To exit, press 0. \n"))
+        num_questions=int(raw_input(prompt))
         if num_questions == 0:
             exit_program()
     except ValueError:
         print "Please enter a valid number."
-        num_questions=int(raw_input("Choose a number of questions to display between 1 and 100. To exit, press 0. \n"))
+        num_questions=int(raw_input(prompt))
     
     count = 0
     #Default number of questions at 0 to start from the beginning
@@ -74,7 +75,7 @@ def main():
                                 
 
             else:
-                num_questions=int(raw_input("Choose a number of questions to display between 1 and 100. To exit, press 0. \n"))
+                num_questions=int(raw_input(prompt))
 
                 #Prompts user for number of questions again.
 
